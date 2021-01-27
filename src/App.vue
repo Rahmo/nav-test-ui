@@ -1,28 +1,130 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <table border='1' width='100%' style='border-collapse: collapse;'>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Actions</th>xf
+      </tr>
+
+      <tr v-for='contact in contacts' :key="contact.firstName">
+        <td>{{ contact.firstName }}</td>
+        <td>{{ contact.lastName }}</td>
+        <td>{{ contact.email }}</td>
+        <td>
+          <input type="button" @click="selectContact(contact)" value="Select">
+          <input type="button" @click="deleteContact(contact.id)" value="Delete">
+        </td>
+      </tr>
+    </table>
+
+
+    <form>
+      <label>First Name</label>
+      <input type="text" name="firstName" v-model="firstName">
+
+      <label>Last Name</label>
+      <input type="text" name="lastName" v-model="lastName">
+
+      <label>Email</label>
+      <input type="email" name="email" v-model="email">
+
+      <input v-if="!id" type="button" @click="createContact(firstName, lastName, email)" value="Add">
+      <input v-if="id" type="button" @click="updateContact(id, firstName, lastName, email)" value="Update">
+      <input type="button" @click="clearForm()" value="Clear">
+
+    </form>
+
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+  import gql from 'graphql-tag'
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  export default {
+    name: 'app',
+    data(){
+      return {
+        id: null,
+        firstName: '',
+        lastName: '',
+        email: ''}
+    },
+    apollo: {
+      contacts: gql`query {
+      contacts {
+        id,
+        firstName,
+        lastName,
+        email
+      }
+    }`,
+
+    },
+    methods: {
+      createContact(firstName, lastName, email){
+        console.log(`Create contact: ${email}`)
+        this.$apollo.mutate({
+                  mutation: gql`mutation createContact($firstName: String!, $lastName: String!, $email: String!){
+            createContact(firstName: $firstName, lastName: $lastName, email: $email) {
+              id,
+              firstName,
+              lastName,
+              email
+              }
+          }`,
+                  variables:{
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email
+                  }
+                }
+        )
+      },
+      updateContact(id, firstName, lastName, email){
+        console.log(`Update contact: # ${id}`)
+        this.$apollo.mutate({
+                  mutation: gql`mutation updateContact($id: ID!, $firstName: String!, $lastName: String!, $email: String!){
+            updateContact(id: $id, firstName: $firstName, lastName: $lastName, email: $email)
+}`,
+                  variables:{
+                    id: id,
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email
+                  }
+                }
+        )
+      },
+      deleteContact(id){
+        console.log(`Delete contact: # ${id}`)
+        this.$apollo.mutate({
+                  mutation: gql`mutation deleteContact($id: ID!){
+            deleteContact(id: $id)
+          }`,
+                  variables:{
+                    id: id,
+                  }
+                }
+        )
+      },
+      selectContact(contact){
+        this.id = contact.id;
+        this.firstName = contact.firstName;
+        this.lastName = contact.lastName;
+        this.email = contact.email;
+      },
+      clearForm(){
+        this.id = null;
+        this.firstName = '';
+        this.lastName = '';
+        this.email = '';
+      }
+    }
   }
-}
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
