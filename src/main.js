@@ -11,7 +11,7 @@ Vue.use(VueApollo)
 const apolloProvider = new VueApollo({
   defaultClient: apolloClient,
 })
-Vue.config.productionTip = false
+Vue.config.productionTip = false.npmrc
 
 new Vue({
   render: h => h(App),
