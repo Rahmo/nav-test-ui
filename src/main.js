@@ -2,9 +2,9 @@ import Vue from 'vue'
 import App from './App.vue'
 import ApolloClient from "apollo-boost"
 import VueApollo from "vue-apollo"
-
+// uri: "http://localhost:4000/graphql"
 const apolloClient = new ApolloClient({
-  uri: "http://localhost:4000/graphql"
+  uri: "http://localhost:3000/graphql"
 })
 
 Vue.use(VueApollo)
