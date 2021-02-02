@@ -1,15 +1,12 @@
 <template>
 	<mds-layout-grid>
-		<mds-row align-horizontal="flex-end">
-			<LeftNavigation/>
+		<mds-row >
+			<LeftNavigation @marketNavChanged="handNavChange"/>
 			<mds-col :cols="10">
-				<ToolBar/>
-				<mds-row align-horizontal="space-around">
-					<mds-col :cols="4">
-						<MainTable/>
-					</mds-col>
-					<mds-col :cols="8">
-						<DetailsPage/>
+				<ToolBar @handleSearchInputEvent="handleSearchData"/>
+				<mds-row >
+					<mds-col :cols="12">
+						<MainTable :searchData="searchField" />
 					</mds-col>
 				</mds-row>
 			</mds-col>
@@ -22,18 +19,23 @@
 	import LeftNavigation from "./LeftNavigation";
 	import ToolBar from "./ToolBar";
 	import MainTable from "./MainTable";
-	import DetailsPage from "./DetailsPage";
 
 	export default {
 		name: 'NavigationHome',
 		components: {
-			DetailsPage,
 			MainTable,
 			ToolBar,
 			LeftNavigation,
 			MdsLayoutGrid,
 			MdsCol,
 			MdsRow
+		},
+		data() {
+			return {
+				searchField:"",
+				modelSearchField1:"",
+				navChanged:""
+			}
 		},
 		created() {
 		},
@@ -43,6 +45,12 @@
 		methods: {
 			handleCancel() {
 			},
+			handleSearchData(value){
+				this.searchField = value
+			},
+			handNavChange(value){
+				this.navChanged = value
+			}
 		},
 	};
 </script>
