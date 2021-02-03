@@ -1,21 +1,22 @@
 <template>
-	<mds-layout-grid>
-		<mds-row >
+<!--	<mds-layout-grid>-->
+<!--		<mds-row >-->
+	<div class="page">
+		<div class="side-bar__container">
+			<div class="side-bar__content">
 			<LeftNavigation @marketNavChanged="handNavChange"/>
-			<mds-col :cols="10">
+			</div>
+		</div>
+		<div class="content__container">
+			<div class="content">
 				<ToolBar @handleSearchInputEvent="handleSearchData"/>
-				<mds-row >
-					<mds-col :cols="12">
-						<MainTable :searchData="searchField" />
-					</mds-col>
-				</mds-row>
-			</mds-col>
-		</mds-row>
-	</mds-layout-grid>
+				<MainTable :searchData="searchField" :navData="navData" />
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
-	import {MdsCol, MdsLayoutGrid, MdsRow} from '@mds/layout-grid';
 	import LeftNavigation from "./LeftNavigation";
 	import ToolBar from "./ToolBar";
 	import MainTable from "./MainTable";
@@ -26,15 +27,12 @@
 			MainTable,
 			ToolBar,
 			LeftNavigation,
-			MdsLayoutGrid,
-			MdsCol,
-			MdsRow
 		},
 		data() {
 			return {
 				searchField:"",
 				modelSearchField1:"",
-				navChanged:""
+				navData:""
 			}
 		},
 		created() {
@@ -49,8 +47,54 @@
 				this.searchField = value
 			},
 			handNavChange(value){
-				this.navChanged = value
+				this.navData = value
 			}
 		},
 	};
 </script>
+<style lang="scss">
+
+	body {
+		overflow: hidden;
+		margin: 0;
+	}
+
+	.page {
+		display: flex;
+	}
+
+
+	.side-bar__content {
+	 height: 100%;
+	}
+
+	.side-bar__container {
+		box-sizing: border-box;
+		padding: 16px;
+		flex-shrink: 0;
+		height: calc(100vh);
+		background-color: lightgrey;
+		width: 300px;
+		overflow-y: scroll;
+
+		.mds-section:not(:last-child) {
+			margin-bottom: 32px;
+		}
+	}
+
+	.side-bar__content {
+		 height: 100%;
+	}
+	.content__container {
+		flex-grow: 1;
+		height: calc(100vh);
+		overflow-y: scroll;
+	}
+
+
+	.content {
+		max-width: 1000px;
+		margin: 0 auto;
+		background-color: ghostwhite;
+	}
+</style>

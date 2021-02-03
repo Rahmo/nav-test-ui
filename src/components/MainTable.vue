@@ -3,7 +3,7 @@
 		<mds-data-table
 				multiselection
 				pagination="below"
-				:pagination-config="paginationOpts"
+				:pagination-config="paginationOpts()"
 				:header-configs="headers"
 				:row-data="feedsFiltered.navigations? feedsFiltered.navigations : []"
 				@mds-data-table-page-change="paginateTable"
@@ -31,6 +31,10 @@
 				type: String,
 				default: '',
 			},
+			navData: {
+				type: String,
+				default: '',
+			},
 		},
 		data() {
 			return {
@@ -39,19 +43,21 @@
 				loading: 0,
 				page: 0,
 				currentPage:1,
-				currentPageSize:10,
+				currentPageSize:20,
 				showMoreEnabled: true,
 				pageSize: 20,
 				selectedPage: 0,
 				showRows:10,
 				lastItemInCursor:1,
-				paginationOpts: {
-					pageSizes: [10, 50, 100, 150],
+				paginationOpts: () => {
+					return {
+					pageSizes: [20, 50, 100, 150],
 					pageSize: 20,
 					page: 1,
 					totalItems: 100,
 					showItemsInfo: true,
 					showItemsSelect: true,
+					}
 				},
 				rows: [
 					{
@@ -355,6 +361,10 @@
 				// `this` points to the vm instance
 				return this.searchData
 			},
+			selectedNavMenu: function () {
+				// `this` points to the vm instance
+				return this.navData
+			},
 			totalCountsPerSearch: function () {
 				return this.feedsFiltered.count
 			}
@@ -382,7 +392,8 @@
 				variables () {
 					// Use vue reactive properties here
 					return {
-						filter: this.searchItem,
+						// filter: this.searchItem,
+						filter: this.selectedNavMenu,
 						page: this.currentPage,
 						pageSize:this.currentPageSize,
 						// cursor: this.lastItemInCursor

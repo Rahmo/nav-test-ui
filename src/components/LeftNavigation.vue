@@ -1,38 +1,38 @@
 <template>
-	<mds-col align-vertical="flex-end" :cols="2">
-		<mds-section class="dashboard-navigation-item" border="none" :size="8" :bold="true" >
-			<mds-form>
-				<mds-fieldset
-						variation="checkbox-group"
-						legend="Markets"
-				>
-					<mds-checkbox @change="handleMarketSelection($event)" :value="marketItem" :key="marketItem" v-for="marketItem in markets">{{marketItem}}</mds-checkbox>
-				</mds-fieldset>
-			</mds-form>
-		</mds-section>
-		<mds-section @change="handleRegionSelection" class="dashboard-navigation-item" border="none" :size="8" :bold="true" >
-			<mds-form>
-				<mds-fieldset
-						variation="checkbox-group"
-						legend="Regions"
-				>
-					<mds-checkbox @change="handleRegionSelection($event)" :key="regionItem" v-for="regionItem in regions">{{regionItem}}</mds-checkbox>
-				</mds-fieldset>
-			</mds-form>
+		<div>
+			<mds-section class="dashboard-navigation-item" border="none" :bold="true" >
+					<mds-form>
+						<mds-fieldset
+								variation="checkbox-group"
+								legend="Markets"
+						>
 
-		</mds-section>
-		<mds-section @change="handleCountrySelection" class="dashboard-navigation-item" border="none" :size="8" :bold="true" >
-			<mds-form>
-				<mds-fieldset
-						variation="checkbox-group"
-						legend="Countries"
-				>
-					<mds-checkbox @change="handleCountrySelection($event)" :key="countryItem" v-for="countryItem in countries">{{countryItem}}</mds-checkbox>
-				</mds-fieldset>
-			</mds-form>
+							<mds-checkbox @change="handleMarketSelection($event)" :id="marketItem" :value="marketItem" :key="marketItem" v-for="marketItem in markets">{{marketItem}}</mds-checkbox>
+						</mds-fieldset>
+					</mds-form>
+				</mds-section>
+				<mds-section class="dashboard-navigation-item" border="none" :bold="true" >
+					<mds-form>
+						<mds-fieldset
+								variation="checkbox-group"
+								legend="Regions"
+						>
+							<mds-checkbox @change="handleRegionSelection($event)" :key="regionItem" v-for="regionItem in regions">{{regionItem}}</mds-checkbox>
+						</mds-fieldset>
+					</mds-form>
 
-		</mds-section>
-	</mds-col>
+				</mds-section>
+				<mds-section class="dashboard-navigation-item" border="none" :bold="true" >
+					<mds-form>
+						<mds-fieldset
+								variation="checkbox-group"
+								legend="Countries"
+						>
+							<mds-checkbox @change="handleCountrySelection($event)" :key="countryItem" v-for="countryItem in countries">{{countryItem}}</mds-checkbox>
+						</mds-fieldset>
+					</mds-form>
+				</mds-section>
+			</div>
 </template>
 <script>
 	import MdsSection from '@mds/section'
@@ -106,13 +106,29 @@
 		methods: {
 			handleMarketSelection(value) {
 				this.selectedMarket= event.target.value
+				this.$emit("marketNavChanged",this.selectedMarket)
 			},
 			handleRegionSelection(value) {
 				this.selectedRegion= event.target.value
+				this.$emit("marketNavChanged",this.selectedRegion)
 			},
 			handleCountrySelection(value) {
 				this.selectedCountry= event.target.value
+				this.$emit("marketNavChanged",this.selectedCountry)
 			}
 		}
 	}
 </script>
+<style lang="scss">
+	.side-bar__container {
+		height: 100vh;
+		padding: 16px;
+		/*background-color: pink;*/
+		/*<!--padding: $mds-space-2-x;-->*/
+		/*<!--background-color: $mds-background-color-light-gray;-->*/
+	}
+	.side-bar__content {
+		height: 100%;
+		overflow-y: scroll;
+	}
+</style>
